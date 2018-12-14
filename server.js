@@ -35,35 +35,35 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 app.get("/scrape", function (req, res) {
 
     // First, we grab the body of the html with axios
-    axios.get("https://flipboard.com/topic/space").then(function (response) {
+    axios.get("https://www.space.com/science-astronomy").then(function (response) {
         // Then, we load that into cheerio and save it to $ for a shorthand selector
         const $ = cheerio.load(response.data);
 
         // Save an empty result object  
         let result = {};
-        // Now, we grab every h2 within an article tag, and do the following:
-        $("h1.post__title").each(function (i, element) {
-           // $("article.post--card").each(function (i, element) {
-            /* result.title = $(element)
-            .children("h1.post__title")
-            .text();
-            result.link = $(element)
-                .children("p.post-attribution")
-                .children("a")
-                .attr("href"); */
+       
+        // Add the text and href of every link, and save them as properties of the result object
+            $("div.pure-u-3-4").each(function (i, element) {
+                //console.log(element);
+                //console.log($(element).children("a").text());
+                //console.log($(element).children("a").attr("href"));
+                let title = $(element).children("h2").children("a").text();
+                let href = $(element).children("h2").children("a").attr("href");
+                let summary = $(element).children("p").text();
+               
+                result.title = title;
+                result.summary = summary;
+                result.link = `https://www.space.com/${href}`;
+                
 
-            // Add the text and href of every link, and save them as properties of the result object
-            result.title = $(element).text();
-            result.link = $(this)
-                .children()
-                .attr("href");
-            console.log(result);
+            
+            
 
             // Create a new Article using the `result` object built from scraping
             db.Article.create(result)
                 .then(function (dbArticle) {
                     // View the added result in the console
-                    console.log(dbArticle);
+                    //console.log(dbArticle);
                 })
                 .catch(function (err) {
                     // If an error occurred, log it

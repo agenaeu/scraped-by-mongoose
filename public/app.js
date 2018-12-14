@@ -11,8 +11,8 @@ $.getJSON("/articles", function (data) {
     
     for (var i = 0; i < data.length; i++) {
         //console.log(data);
-        // Display the apropos information on the page
-        $("#articles").append(`<h3 class="articleClick" data-id= ${data[i]._id}> ${data[i].title}</h3> <a href="${data[i].link}">${data[i].link}</a>`);
+        // Display the aproppriate information on the page
+        $("#articles").append(`<h3 class="articleClick" data-id= ${data[i]._id}> ${data[i].title}</h3><p>${data[i].summary}</p> <a href="${data[i].link}">${data[i].link}</a>`);
         //$("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>");
         $("#articles").append(`<br><button data-id= ${data[i]._id} type="button" class="btn btn-primary">Comment</button><hr>`);
     }
